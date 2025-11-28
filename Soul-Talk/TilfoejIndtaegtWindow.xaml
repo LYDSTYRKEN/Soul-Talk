@@ -1,0 +1,94 @@
+﻿<Window x:Class="Soul_Talk.TilfoejIndtaegtWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Tilføj indtægt" Height="260" Width="400">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Eksisterende kunde -->
+        <TextBlock Text="Eksisterende kunde"
+               Grid.Row="0" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,5"
+              ItemsSource="{Binding Kunder}"
+              DisplayMemberPath="Navn"
+              SelectedItem="{Binding ValgtKunde}" />
+
+        <!-- Opret ny kunde -->
+        <CheckBox Grid.Row="1" Grid.ColumnSpan="2"
+              Content="Opret ny kunde"
+              Margin="0,0,0,5"
+              IsChecked="{Binding OpretNyKunde}" />
+
+        <!-- Nyt kundenavn -->
+        <TextBlock Text="Nyt kundenavn"
+               Grid.Row="2" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,5"
+             Text="{Binding NyKundeNavn}" />
+
+        <!-- Institution til ny kunde (valgfri) -->
+        <TextBlock Text="Institution (valgfri)"
+               Grid.Row="3" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,5"
+              ItemsSource="{Binding Institutioner}"
+              DisplayMemberPath="Navn"
+              SelectedItem="{Binding ValgtInstitution}" />
+
+        <!-- Dato -->
+        <TextBlock Text="Dato"
+               Grid.Row="4" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <DatePicker Grid.Row="4" Grid.Column="1" Margin="0,0,0,5"
+                SelectedDate="{Binding Dato}" />
+
+        <!-- Timer -->
+        <TextBlock Text="Timer"
+               Grid.Row="5" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,5"
+             Text="{Binding Timer}" />
+
+        <!-- Fysisk/online -->
+        <CheckBox Grid.Row="6" Grid.ColumnSpan="2" Margin="0,0,0,5"
+              Content="Fysisk møde"
+              IsChecked="{Binding ErFysisk}" />
+
+        <!-- Kilometer -->
+        <TextBlock Text="Kilometer"
+               Grid.Row="7" Grid.Column="0"
+               Margin="0,0,10,5" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="7" Grid.Column="1" Margin="0,0,0,5"
+             Text="{Binding Kilometer}" />
+
+        <!-- Knapper -->
+        <StackPanel Grid.Row="8" Grid.ColumnSpan="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="0,10,0,0">
+            <Button Content="Gem" Width="80" Margin="5"
+                Command="{Binding GemCommand}" />
+            <Button Content="Annuller" Width="80" Margin="5"
+                Command="{Binding AnnullerCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

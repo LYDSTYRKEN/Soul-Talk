@@ -16,11 +16,11 @@ namespace Soul_Talk.Models
 
         public bool ErFysisk { get; set; }          // True = fysisk, false = online.
  
-        public double Kilometer { get; set; }      // Kørte kilometer i forbindelse med denne indtægt. 0 hvis der ikke er kørt noget.
+        public decimal Kilometer { get; set; }      // Kørte kilometer i forbindelse med denne indtægt. 0 hvis der ikke er kørt noget.
 
-        public double Timepris { get; set; }
+        public decimal Timepris { get; set; }
 
-        public double Beloeb { get; set; }         // Alternativt: public decimal Beloeb => Timer * Timepris;
+        public decimal Beloeb { get; set; }         // Alternativt: public decimal Beloeb => Timer * Timepris;
         
     }
 }
