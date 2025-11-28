@@ -34,7 +34,7 @@ namespace Soul_Talk.Models.Services
                 }
                 else
                 {
-                    return 450m;
+                    return 550m;
                 }
             }
 

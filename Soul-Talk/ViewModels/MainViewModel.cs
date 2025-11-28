@@ -152,13 +152,13 @@ namespace Soul_Talk.ViewModels
             {
                 if (ind.Kunde != null && ind.Kunde.Id == kunde.Id)
                 {
-                    string tekst = ind.Dato.ToShortDateString() + " - " +
-                                   ind.Timer + " t - " +
+                    string tekst = ind.Dato.ToShortDateString() + " | " +
+                                   ind.Timer + " timer | " +
                                    ind.Beloeb + " kr";
 
                     if (ind.ErFysisk && ind.Kilometer > 0)
                     {
-                        tekst = tekst + " - " + ind.Kilometer + " km";
+                        tekst = tekst + " | " + ind.Kilometer + " km";
                     }
 
                     OverblikNode indNode = new OverblikNode(tekst, ind);
