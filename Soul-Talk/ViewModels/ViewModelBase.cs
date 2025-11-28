@@ -1,15 +1,19 @@
 ﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Soul_Talk.ViewModels
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    // Fælles base-klasse til ViewModels
+    public class ViewModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        // Kaldes manuelt fra hver property
+        protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

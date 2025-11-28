@@ -1,110 +1,109 @@
-﻿using Soul_Talk.Models;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using Soul_Talk.Models;
 
 namespace Soul_Talk.ViewModels
 {
     public class TilfoejIndtaegtViewModel : ViewModelBase
     {
-        private readonly MainViewModel _main;
-        private readonly Action _close;
+        private MainViewModel _main;
+        private Action _close;
 
-        public ObservableCollection<Kunde> Kunder { get; }
+        public ObservableCollection<Kunde> Kunder { get; set; }
+        public ObservableCollection<Institution> Institutioner { get; set; }
 
-        private Kunde? _valgtKunde;
-        public Kunde? ValgtKunde
+        private Kunde _valgtKunde;
+        public Kunde ValgtKunde
         {
-            get => _valgtKunde;
+            get { return _valgtKunde; }
             set
             {
                 _valgtKunde = value;
-                OnPropertyChanged(nameof(ValgtKunde));
+                OnPropertyChanged("ValgtKunde");
             }
         }
-
-        public ObservableCollection<Institution> Institutioner { get; }
 
         private bool _opretNyKunde;
         public bool OpretNyKunde
         {
-            get => _opretNyKunde;
+            get { return _opretNyKunde; }
             set
             {
                 _opretNyKunde = value;
-                OnPropertyChanged(nameof(OpretNyKunde));
+                OnPropertyChanged("OpretNyKunde");
             }
         }
 
-        private string _nyKundeNavn = string.Empty;
+        private string _nyKundeNavn = "";
         public string NyKundeNavn
         {
-            get => _nyKundeNavn;
+            get { return _nyKundeNavn; }
             set
             {
                 _nyKundeNavn = value;
-                OnPropertyChanged(nameof(NyKundeNavn));
+                OnPropertyChanged("NyKundeNavn");
             }
         }
 
-        private Institution? _valgtInstitution;
-        public Institution? ValgtInstitution
+        private Institution _valgtInstitution;
+        public Institution ValgtInstitution
         {
-            get => _valgtInstitution;
+            get { return _valgtInstitution; }
             set
             {
                 _valgtInstitution = value;
-                OnPropertyChanged(nameof(ValgtInstitution));
+                OnPropertyChanged("ValgtInstitution");
             }
         }
 
         private DateTime _dato;
         public DateTime Dato
         {
-            get => _dato;
+            get { return _dato; }
             set
             {
                 _dato = value;
-                OnPropertyChanged(nameof(Dato));
+                OnPropertyChanged("Dato");
             }
         }
 
         private decimal _timer;
         public decimal Timer
         {
-            get => _timer;
+            get { return _timer; }
             set
             {
                 _timer = value;
-                OnPropertyChanged(nameof(Timer));
+                OnPropertyChanged("Timer");
             }
         }
 
         private bool _erFysisk;
         public bool ErFysisk
         {
-            get => _erFysisk;
+            get { return _erFysisk; }
             set
             {
                 _erFysisk = value;
-                OnPropertyChanged(nameof(ErFysisk));
+                OnPropertyChanged("ErFysisk");
             }
         }
 
         private decimal _kilometer;
         public decimal Kilometer
         {
-            get => _kilometer;
+            get { return _kilometer; }
             set
             {
                 _kilometer = value;
-                OnPropertyChanged(nameof(Kilometer));
+                OnPropertyChanged("Kilometer");
             }
         }
 
-
-        public ICommand GemCommand { get; }
-        public ICommand AnnullerCommand { get; }
+        public ICommand GemCommand { get; set; }
+        public ICommand AnnullerCommand { get; set; }
 
         public TilfoejIndtaegtViewModel(MainViewModel main, Action close)
         {
@@ -112,15 +111,11 @@ namespace Soul_Talk.ViewModels
             _close = close;
 
             Kunder = new ObservableCollection<Kunde>(_main.HentAlleKunder());
-
             Institutioner = new ObservableCollection<Institution>(_main.HentAlleInstitutioner());
 
-            OpretNyKunde = false;      // standard: brug eksisterende kunde
+            OpretNyKunde = false;
             Dato = DateTime.Today;
             ErFysisk = true;
-
-            Dato = DateTime.Today;
-            ErFysisk = true;   // standard: fysisk møde
 
             GemCommand = new RelayCommand(Gem);
             AnnullerCommand = new RelayCommand(_close);
@@ -168,6 +163,5 @@ namespace Soul_Talk.ViewModels
 
             _close();
         }
-
     }
 }

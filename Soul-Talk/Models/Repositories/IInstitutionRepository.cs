@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Soul_Talk.Models.Repositories
 {
     public interface IInstitutionRepository
     {
-        IReadOnlyCollection<Institution> HentAlle();
-        Institution? HentVedId(int id);
+        List<Institution> HentAlle();
         Institution Gem(Institution institution);
     }
 }

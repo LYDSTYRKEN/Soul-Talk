@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Soul_Talk.ViewModels
 {
     public class OverblikNode : ViewModelBase
     {
-        public string Title { get; }
+        public string Title { get; set; }
 
-        public ObservableCollection<OverblikNode> Children { get; } = new();
+        public ObservableCollection<OverblikNode> Children { get; set; }
 
-        public object? Data { get; }
+        public object Data { get; set; }
 
-        public OverblikNode(string title, object? data = null)
+        public OverblikNode(string title, object data = null)
         {
             Title = title;
             Data = data;
+            Children = new ObservableCollection<OverblikNode>();
         }
     }
 }

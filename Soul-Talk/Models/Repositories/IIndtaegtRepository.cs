@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Soul_Talk.Models.Repositories
 {
     public interface IIndtaegtRepository
     {
-        IReadOnlyCollection<Indtaegt> HentForKunde(
-            int kundeId,
-            DateTime? fra = null,
-            DateTime? til = null);
-
+        List<Indtaegt> HentForKunde(int kundeId);
         Indtaegt Gem(Indtaegt indtaegt);
     }
 }

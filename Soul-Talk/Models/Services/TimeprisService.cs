@@ -1,30 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Soul_Talk.Models.Services
-{ 
-     public class TimeprisService : ITimeprisService
+{
+    public class TimeprisService : ITimeprisService
     {
         public decimal HentTimepris(Kunde kunde, bool erFysisk)
         {
-            if (kunde == null) throw new ArgumentNullException(nameof(kunde));
-
-            // Privat kunde (ingen institution)
-            if (kunde.Institution is null)
+            if (kunde == null)
             {
-                return erFysisk ? 450m : 350m;
+                // Simpelt fallback. Burde egentlig aldrig ske.
+                return 0;
             }
 
-            // Institutionskunder
+            // Privat kunde (ingen institution)
+            if (kunde.Institution == null)
+            {
+                if (erFysisk)
+                {
+                    return 450m;
+                }
+                else
+                {
+                    return 350m;
+                }
+            }
+
+            // Offentlig institution
             if (kunde.Institution.Type == InstitutionType.Offentlig)
             {
-                return erFysisk ? 550m : 450m;
+                if (erFysisk)
+                {
+                    return 550m;
+                }
+                else
+                {
+                    return 450m;
+                }
             }
 
             // Privat institution
-            return erFysisk ? 450m : 350m;
+            if (erFysisk)
+            {
+                return 450m;
+            }
+            else
+            {
+                return 350m;
+            }
         }
     }
 }
-

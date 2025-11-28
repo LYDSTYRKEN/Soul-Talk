@@ -5,18 +5,27 @@ namespace Soul_Talk.ViewModels
 {
     public class RelayCommand : ICommand
     {
-        private readonly Action _execute;
+        private Action _execute;
 
         public RelayCommand(Action execute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _execute = execute;
         }
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
 
-        public void Execute(object? parameter) => _execute();
+        public void Execute(object parameter)
+        {
+            if (_execute != null)
+            {
+                _execute();
+            }
+        }
 
-        public event EventHandler? CanExecuteChanged
+        public event EventHandler CanExecuteChanged
         {
             add { }
             remove { }
