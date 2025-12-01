@@ -1,14 +1,19 @@
-﻿using System;
-
-namespace Soul_Talk.Models.Services
+﻿namespace Soul_Talk.Models.Services
 {
-    public class TimeprisService : ITimeprisService
+    // Service-klasse der beregner timeprisen ud fra kunde og om mødet er fysisk/online
+    public class TimeprisService
     {
+        // Returnerer timeprisen i kroner
+        // Regler:
+        //  Offentlig institution:  Fysisk 550 / Online 550
+        //  Privat institution:     Fysisk 450 / Online 350
+        //  Privat kunde:           Fysisk 450 / Online 350
+
         public decimal HentTimepris(Kunde kunde, bool erFysisk)
         {
             if (kunde == null)
             {
-                // Simpelt fallback. Burde egentlig aldrig ske.
+                // Burde egentlig aldrig ske, men vi beskytter os
                 return 0;
             }
 
