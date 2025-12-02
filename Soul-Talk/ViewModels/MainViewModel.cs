@@ -27,7 +27,7 @@ namespace Soul_Talk.ViewModels
         private List<Indtaegt> _indtaegter = new List<Indtaegt>();
 
         // Service der kan beregne timepris ud fra kunde + fysisk/online
-        private TimeprisService _timeprisService = new TimeprisService();
+        private Timepris _timeprisService = new Timepris();
 
         // --------------------------------------------
         // Data til TreeView i MainWindow

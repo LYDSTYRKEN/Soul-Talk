@@ -22,18 +22,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
         <!-- Overskrift -->
         <StackPanel Grid.Row="0" Margin="10">
             <TextBlock Text="Bogføringsprogram"
+                       HorizontalAlignment="Center"
                        FontSize="28"
-                       FontWeight="Bold" />
+                       FontWeight="Bold"/>
+            
             <TextBlock Text="Oversigt over indtægter"
+                       HorizontalAlignment="Center"
                        FontSize="18"
-                       Margin="0,5,0,0" />
+                       FontWeight="Light"
+                       Margin="0,5,0,0"/>
         </StackPanel>
 
         <!-- TreeView med dine OverblikNode -->
@@ -48,8 +48,8 @@
                     FontSize="15" 
                     FontWeight="Bold"
                     FontFamily="Corbel"
-                HorizontalAlignment="Right"
-                Margin="0,0,140,10"
+                HorizontalAlignment="Center"
+                Margin="0,0,130,10"
                 Height="40"
                 Width="120"
                 Command="{Binding TilfoejIndtaegtCommand}"/>
@@ -58,11 +58,11 @@
                 Content="Tilføj Institution"
                     FontSize="15" 
                     FontWeight="Bold"
-                    FontFamily="Corbel"
-                HorizontalAlignment="Right"
+                    FontFamily=""
+                HorizontalAlignment="Center"
                 Height="40"
                 Width="120"
-                Margin="0,0,10,10"
-                Command=""/>    
+                Margin="130,0,0,10"
+                Command="{Binding xxx }"/>    
     </Grid>
 </Window>
