@@ -41,8 +41,14 @@
                   Margin="10,0,10,10"
                   ItemsSource="{Binding RootNodes}">
         </TreeView>
+        
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Knap bundet til TilfoejIndtaegtCommand -->
+            <!-- Knap bundet til TilfoejIndtaegtCommand -->
         <Button Grid.Row="2" Grid.Column="0"
                     Content="Tilføj indtægt" 
                     FontSize="15" 

@@ -46,13 +46,16 @@ namespace Soul_Talk.Models.Forretningslogik
             }
 
             // Privat institution
-            if (erFysisk)
+            if (kunde.Institution.Type == InstitutionType.Privat)
             {
-                return 450m;
-            }
-            else
-            {
-                return 350m;
+                if (erFysisk)
+                {
+                    return 450m;
+                }
+                else
+                {
+                    return 350m;
+                }
             }
         }
     }
