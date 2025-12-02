@@ -1,7 +1,7 @@
 ﻿namespace Soul_Talk.Models.Services
 {
     // Service-klasse der beregner timeprisen ud fra kunde og om mødet er fysisk/online
-    public class Timepris
+    public class TimeprisService
     {
         // Returnerer timeprisen i kroner
         // Regler:

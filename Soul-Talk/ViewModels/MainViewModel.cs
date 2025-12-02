@@ -27,7 +27,7 @@ namespace Soul_Talk.ViewModels
         private List<Indtaegt> _indtaegter = new List<Indtaegt>();
 
         // Service der kan beregne timepris ud fra kunde + fysisk/online
-        private Timepris _timeprisService = new Timepris();
+        private TimeprisService _timeprisService = new TimeprisService();
 
         // --------------------------------------------
         // Data til TreeView i MainWindow
@@ -65,24 +65,53 @@ namespace Soul_Talk.ViewModels
             // Odense Kommune (offentlig institution)
             Institution kommune1 = new Institution();
             kommune1.Id = 1;
-            kommune1.Navn = "Odense Kommune";
+            kommune1.Navn = "Haderslev Kommune";
             kommune1.Type = InstitutionType.Offentlig;
 
             // Nyborg Kommune (offentlig institution)
             Institution kommune2 = new Institution();
             kommune2.Id = 2;
-            kommune2.Navn = "Nyborg Kommune";
+            kommune2.Navn = "Christiansfeld Kommune";
             kommune2.Type = InstitutionType.Offentlig;
+
+            //  Kommune (offentlig institution)
+            Institution kommune3 = new Institution();
+            kommune3.Id = 3;
+            kommune3.Navn = "Horsens Kommune";
+            kommune3.Type = InstitutionType.Offentlig;
+
+            //  Kommune (offentlig institution)
+            Institution kommune4 = new Institution();
+            kommune4.Id = 4;
+            kommune4.Navn = "Odense Kommune";
+            kommune4.Type = InstitutionType.Offentlig;
 
             // Skovbrynet (privat institution)
             Institution privatInst1 = new Institution();
-            privatInst1.Id = 3;
+            privatInst1.Id = 5;
             privatInst1.Navn = "Skovbrynet";
             privatInst1.Type = InstitutionType.Privat;
 
+            // Fuglereden (privat institution)
+            Institution privatInst2 = new Institution();
+            privatInst2.Id = 6;
+            privatInst2.Navn = "Fuglereden";
+            privatInst2.Type = InstitutionType.Privat;
+
+            // Hønegården (privat institution)
+            Institution privatInst3 = new Institution();
+            privatInst3.Id = 7;
+            privatInst3.Navn = "Hønegården";
+            privatInst3.Type = InstitutionType.Privat;
+
             _institutioner.Add(kommune1);
             _institutioner.Add(kommune2);
+            _institutioner.Add(kommune3);
+            _institutioner.Add(kommune4);
             _institutioner.Add(privatInst1);
+            _institutioner.Add(privatInst2);
+            _institutioner.Add(privatInst3);
+
         }
 
         // --------------------------------------------

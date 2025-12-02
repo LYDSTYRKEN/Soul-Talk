@@ -58,7 +58,7 @@
                 Content="Tilføj Institution"
                     FontSize="15" 
                     FontWeight="Bold"
-                    FontFamily=""
+                    FontFamily="Corbel"
                 HorizontalAlignment="Center"
                 Height="40"
                 Width="120"
