@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Soul_Talk.Models;
-using Soul_Talk.Models.Services;
+using Soul_Talk.Models.Forretningslogik;
 
 namespace Soul_Talk.ViewModels
 {
@@ -27,7 +27,7 @@ namespace Soul_Talk.ViewModels
         private List<Indtaegt> _indtaegter = new List<Indtaegt>();
 
         // Service der kan beregne timepris ud fra kunde + fysisk/online
-        private TimeprisService _timeprisService = new TimeprisService();
+        private Timepris _timepris = new Timepris();
 
         // --------------------------------------------
         // Data til TreeView i MainWindow
@@ -120,7 +120,7 @@ namespace Soul_Talk.ViewModels
         private Indtaegt OpretIndtaegt(Kunde kunde, DateTime dato, decimal timer, bool erFysisk, decimal kilometer)
         {
             // Find timepris (afhænger af kundetype + fysisk/online)
-            decimal timepris = _timeprisService.HentTimepris(kunde, erFysisk);
+            decimal timepris = _timepris.HentTimepris(kunde, erFysisk);
 
             Indtaegt ind = new Indtaegt();
             // ind.Id findes ikke længere i Indtaegt-klassen og bruges ikke, så vi sætter ikke Id her
