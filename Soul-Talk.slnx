@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Soul-Talk/Soul-Talk.csproj" />
+  <Project Path="Soul_Talk.Tests/Soul_Talk.Tests.csproj" Id="04524bc8-e7c0-43aa-8556-2224e6061f25" />
 </Solution>

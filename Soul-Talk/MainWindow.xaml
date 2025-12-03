@@ -47,6 +47,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+        </Grid>
 
             <!-- Knap bundet til TilfoejIndtaegtCommand -->
         <Button Grid.Row="2" Grid.Column="0"

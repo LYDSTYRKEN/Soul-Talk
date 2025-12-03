@@ -1,4 +1,5 @@
 ﻿using Soul_Talk.Models.Forretningslogik;
+using Soul_Talk.Models;
 
 namespace Soul_Talk.Models.Forretningslogik
 {
@@ -57,6 +58,9 @@ namespace Soul_Talk.Models.Forretningslogik
                     return 350m;
                 }
             }
+
+            return 0;
+
         }
     }
 }
