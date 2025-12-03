@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Soul_Talk.Models;
 using Soul_Talk.Models.Forretningslogik;
+using Soul_Talk.Models.Repositories;
 
 namespace Soul_Talk.ViewModels
 {
@@ -14,19 +15,14 @@ namespace Soul_Talk.ViewModels
     public class MainViewModel : ViewModelBase
     {
         // --------------------------------------------
-        // "Model-data" i hukommelsen (vi bruger ingen database)
+        // Repositories (lager i hukommelsen)
         // --------------------------------------------
 
-        // Liste over alle institutioner (kommuner + private institutioner)
-        private List<Institution> _institutioner = new List<Institution>();
+        private InstitutionRepository _instRepo = new InstitutionRepository();
+        private KundeRepository _kundeRepo = new KundeRepository();
+        private IndtaegtRepository _indtaegtRepo = new IndtaegtRepository();
 
-        // Liste over alle kunder (både private og institutionskunder)
-        private List<Kunde> _kunder = new List<Kunde>();
-
-        // Liste over alle indtægter
-        private List<Indtaegt> _indtaegter = new List<Indtaegt>();
-
-        // Service der kan beregne timepris ud fra kunde + fysisk/online
+        // Klasse der kan beregne timepris
         private Timepris _timepris = new Timepris();
 
         // --------------------------------------------
@@ -53,7 +49,7 @@ namespace Soul_Talk.ViewModels
             // Læg nogle institutioner ind fra start (ingen kunder/indtægter endnu)
             AllerdeEksisterneData();
 
-            // Byg TreeView-strukturen ud fra listerne
+            // Byg TreeView-strukturen ud fra repositories
             BygTraeFraModel();
         }
 
@@ -62,25 +58,25 @@ namespace Soul_Talk.ViewModels
         // --------------------------------------------
         private void AllerdeEksisterneData()
         {
-            // Odense Kommune (offentlig institution)
+            // Haderslev Kommune (offentlig institution)
             Institution kommune1 = new Institution();
             kommune1.Id = 1;
             kommune1.Navn = "Haderslev Kommune";
             kommune1.Type = InstitutionType.Offentlig;
 
-            // Nyborg Kommune (offentlig institution)
+            // Christiansfeld Kommune (offentlig institution)
             Institution kommune2 = new Institution();
             kommune2.Id = 2;
             kommune2.Navn = "Christiansfeld Kommune";
             kommune2.Type = InstitutionType.Offentlig;
 
-            //  Kommune (offentlig institution)
+            // Horsens Kommune (offentlig institution)
             Institution kommune3 = new Institution();
             kommune3.Id = 3;
             kommune3.Navn = "Horsens Kommune";
             kommune3.Type = InstitutionType.Offentlig;
 
-            //  Kommune (offentlig institution)
+            // Odense Kommune (offentlig institution)
             Institution kommune4 = new Institution();
             kommune4.Id = 4;
             kommune4.Navn = "Odense Kommune";
@@ -104,14 +100,13 @@ namespace Soul_Talk.ViewModels
             privatInst3.Navn = "Hønegården";
             privatInst3.Type = InstitutionType.Privat;
 
-            _institutioner.Add(kommune1);
-            _institutioner.Add(kommune2);
-            _institutioner.Add(kommune3);
-            _institutioner.Add(kommune4);
-            _institutioner.Add(privatInst1);
-            _institutioner.Add(privatInst2);
-            _institutioner.Add(privatInst3);
-
+            _instRepo.Tilfoej(kommune1);
+            _instRepo.Tilfoej(kommune2);
+            _instRepo.Tilfoej(kommune3);
+            _instRepo.Tilfoej(kommune4);
+            _instRepo.Tilfoej(privatInst1);
+            _instRepo.Tilfoej(privatInst2);
+            _instRepo.Tilfoej(privatInst3);
         }
 
         // --------------------------------------------
@@ -123,7 +118,6 @@ namespace Soul_Talk.ViewModels
             decimal timepris = _timepris.HentTimepris(kunde, erFysisk);
 
             Indtaegt ind = new Indtaegt();
-            // ind.Id findes ikke længere i Indtaegt-klassen og bruges ikke, så vi sætter ikke Id her
             ind.Kunde = kunde;
             ind.Dato = dato;
             ind.Timer = timer;
@@ -136,36 +130,36 @@ namespace Soul_Talk.ViewModels
         }
 
         // --------------------------------------------
-        // Hjælpemetoder som andre ViewModels (fx TilfoejIndtaegtViewModel) bruger
+        // Hjælpemetoder som andre ViewModels bruger
         // --------------------------------------------
 
         // Returnerer alle institutioner (bruges til ComboBox i "Tilføj indtægt"-vinduet)
         public List<Institution> HentAlleInstitutioner()
         {
-            return _institutioner;
+            return _instRepo.HentAlle();
         }
 
         // Returnerer alle kunder (bruges til ComboBox i "Tilføj indtægt"-vinduet)
         public List<Kunde> HentAlleKunder()
         {
-            return _kunder;
+            return _kundeRepo.HentAlle();
         }
 
-        // Opretter en ny kunde og lægger den i listen
+        // Opretter en ny kunde og lægger den i repository
         // "institution" kan være null -> så er det en privat kunde
         public Kunde TilfoejNyKunde(string navn, Institution institution)
         {
             Kunde kunde = new Kunde();
-            kunde.Id = _kunder.Count + 1;
+            kunde.Id = _kundeRepo.HentAlle().Count + 1;
             kunde.Navn = navn;
             kunde.Institution = institution;
 
-            _kunder.Add(kunde);
+            _kundeRepo.Tilfoej(kunde);
             return kunde;
         }
 
         // --------------------------------------------
-        // Byg TreeView-strukturen (RootNodes) ud fra listerne
+        // Byg TreeView-strukturen (RootNodes) ud fra repositories
         // --------------------------------------------
         private void BygTraeFraModel()
         {
@@ -180,8 +174,11 @@ namespace Soul_Talk.ViewModels
             RootNodes.Add(privateInstRoot);
             RootNodes.Add(privateKunderRoot);
 
+            List<Institution> institutioner = _instRepo.HentAlle();
+            List<Kunde> kunder = _kundeRepo.HentAlle();
+
             // Først: institutioner + kunder under dem
-            foreach (Institution inst in _institutioner)
+            foreach (Institution inst in institutioner)
             {
                 // Node for institutionen
                 OverblikNode instNode = new OverblikNode(inst.Navn, inst);
@@ -197,7 +194,7 @@ namespace Soul_Talk.ViewModels
                 }
 
                 // Kunder under denne institution
-                foreach (Kunde kunde in _kunder)
+                foreach (Kunde kunde in kunder)
                 {
                     if (kunde.Institution != null && kunde.Institution.Id == inst.Id)
                     {
@@ -211,7 +208,7 @@ namespace Soul_Talk.ViewModels
             }
 
             // Derefter: private kunder (uden institution)
-            foreach (Kunde kunde in _kunder)
+            foreach (Kunde kunde in kunder)
             {
                 if (kunde.Institution == null)
                 {
@@ -227,7 +224,9 @@ namespace Soul_Talk.ViewModels
         // Tilføjer indtægtsnoder under en given kundenode
         private void TilfoejIndtaegterTilKundeNode(OverblikNode kundeNode, Kunde kunde)
         {
-            foreach (Indtaegt ind in _indtaegter)
+            List<Indtaegt> alleIndtaegter = _indtaegtRepo.HentAlle();
+
+            foreach (Indtaegt ind in alleIndtaegter)
             {
                 if (ind.Kunde != null && ind.Kunde.Id == kunde.Id)
                 {
@@ -267,9 +266,9 @@ namespace Soul_Talk.ViewModels
         // Bliver kaldt fra TilfoejIndtaegtViewModel, når brugeren klikker "Gem"
         public void TilfoejIndtaegtFraDialog(Kunde kunde, DateTime dato, decimal timer, bool erFysisk, decimal kilometer)
         {
-            // Opret ny indtægt og læg den i listen
+            // Opret ny indtægt og læg den i repository
             Indtaegt ind = OpretIndtaegt(kunde, dato, timer, erFysisk, kilometer);
-            _indtaegter.Add(ind);
+            _indtaegtRepo.Tilfoej(ind);
 
             // Byg træet igen, så den nye indtægt vises i UI
             BygTraeFraModel();
