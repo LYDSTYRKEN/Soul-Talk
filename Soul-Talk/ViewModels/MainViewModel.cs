@@ -46,11 +46,16 @@ namespace Soul_Talk.ViewModels
 
             // Knyt knappen i MainWindow til metoden TilfoejIndtaegt()
             TilfoejIndtaegtCommand = new RelayCommand(TilfoejIndtaegt);
-
+            
             // Læg nogle institutioner ind fra start (ingen kunder/indtægter endnu)
-            AllerdeEksisterneData();
 
             LaesAltFraFiler();
+
+            if (_instRepo.HentAlle().Count == 0)
+            {
+                AllerdeEksisterneData();
+            }
+
 
             // Byg TreeView-strukturen ud fra repositories
             BygTraeFraModel();
