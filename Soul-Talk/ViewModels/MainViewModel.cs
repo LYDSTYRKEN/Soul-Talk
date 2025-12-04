@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Soul_Talk.Models;
 using Soul_Talk.Models.Forretningslogik;
 using Soul_Talk.Models.Repositories;
+using System.IO;
 
 namespace Soul_Talk.ViewModels
 {
@@ -48,6 +49,8 @@ namespace Soul_Talk.ViewModels
 
             // Læg nogle institutioner ind fra start (ingen kunder/indtægter endnu)
             AllerdeEksisterneData();
+
+            LaesAltFraFiler();
 
             // Byg TreeView-strukturen ud fra repositories
             BygTraeFraModel();
@@ -272,6 +275,112 @@ namespace Soul_Talk.ViewModels
 
             // Byg træet igen, så den nye indtægt vises i UI
             BygTraeFraModel();
+
+            GemAltTilFiler(); // Gem data til filer efter tilføjelse af indtægt
         }
+        
+        // Gemmer alle data til tre tekstfiler i programmets mappe
+        public void GemAltTilFiler()
+        {
+            _instRepo.GemTilFil("institutioner.txt");
+            _kundeRepo.GemTilFil("kunder.txt");
+            _indtaegtRepo.GemTilFil("indtaegter.txt");
+        }
+
+        private void LaesAltFraFiler()
+        {
+            // 1) Institutioner
+            if (File.Exists("institutioner.txt"))
+            {
+                string[] linjer = File.ReadAllLines("institutioner.txt");
+
+                foreach (string linje in linjer)
+                {
+                    string[] dele = linje.Split(';');   // dele[0] = Id, dele[1] = Navn, dele[2] = Type
+
+                    Institution inst = new Institution();
+                    inst.Id = int.Parse(dele[0]);
+                    inst.Navn = dele[1];
+                    inst.Type = (InstitutionType)Enum.Parse(typeof(InstitutionType), dele[2]);
+
+                    _instRepo.Tilfoej(inst);
+                }
+            }
+
+            // 2) Kunder
+            if (File.Exists("kunder.txt"))
+            {
+                string[] linjer = File.ReadAllLines("kunder.txt");
+                List<Institution> institutioner = _instRepo.HentAlle();
+
+                foreach (string linje in linjer)
+                {
+                    string[] dele = linje.Split(';');   // dele[0] = Id, dele[1] = Navn, dele[2] = InstitutionId
+
+                    Kunde k = new Kunde();
+                    k.Id = int.Parse(dele[0]);
+                    k.Navn = dele[1];
+                    int instId = int.Parse(dele[2]);
+
+                    if (instId != 0)
+                    {
+                        // find institution med samme Id
+                        Institution fundetInst = null;
+                        foreach (Institution inst in institutioner)
+                        {
+                            if (inst.Id == instId)
+                            {
+                                fundetInst = inst;
+                                break;
+                            }
+                        }
+                        k.Institution = fundetInst;
+                    }
+
+                    _kundeRepo.Tilfoej(k);
+                }
+            }
+
+            // 3) Indtægter
+            if (File.Exists("indtaegter.txt"))
+            {
+                string[] linjer = File.ReadAllLines("indtaegter.txt");
+                List<Kunde> kunder = _kundeRepo.HentAlle();
+
+                foreach (string linje in linjer)
+                {
+                    string[] dele = linje.Split(';');   // 0=KundeId, 1=Dato, 2=Timer, 3=ErFysisk, 4=Km, 5=Timepris, 6=Beloeb
+
+                    int kundeId = int.Parse(dele[0]);
+
+                    // find kunde med samme Id
+                    Kunde fundetKunde = null;
+                    foreach (Kunde k in kunder)
+                    {
+                        if (k.Id == kundeId)
+                        {
+                            fundetKunde = k;
+                            break;
+                        }
+                    }
+
+                    if (fundetKunde == null)
+                        continue;
+
+                    Indtaegt ind = new Indtaegt();
+                    ind.Kunde = fundetKunde;
+                    ind.Dato = DateTime.Parse(dele[1]);
+                    ind.Timer = decimal.Parse(dele[2]);
+                    ind.ErFysisk = bool.Parse(dele[3]);
+                    ind.Kilometer = decimal.Parse(dele[4]);
+                    ind.Timepris = decimal.Parse(dele[5]);
+                    ind.Beloeb = decimal.Parse(dele[6]);
+
+                    _indtaegtRepo.Tilfoej(ind);
+                }
+            }
+        }
+
+
     }
 }
